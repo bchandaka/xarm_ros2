@@ -278,6 +278,10 @@ void JoyToServoPub::_joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
 
     switch (joystick_type_) {
         case JOYSTICK_XBOX360_WIRED: // xbox360 wired
+            if (msg->axes.size() != 8 || msg->buttons.size() != 12)
+                return;
+            pub_twist = _convert_xbox360_joy_to_cmd(msg->axes, msg->buttons, twist_msg, joint_msg);
+            break;
         case JOYSTICK_XBOX360_WIRELESS: // xbox360 wireless
             if (msg->axes.size() != 8 || msg->buttons.size() != 11)
                 return;
